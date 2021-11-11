@@ -33,7 +33,7 @@ func (l *Log) Read(offset uint64) (Record, error) {
 
 	var record Record
 
-	if offset > uint64(len(l.Records)-1) || len(l.Records) == 0 {
+	if len(l.Records) == 0 || offset < 0 || offset >= uint64(len(l.Records)) {
 		return Record{}, ErrOutOffset
 	}
 

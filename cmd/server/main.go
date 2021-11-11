@@ -48,10 +48,6 @@ func (s *server) Read(ctx context.Context, in *pb.ConsumeRequest) (*pb.ConsumeRe
 	}, nil
 }
 
-func (s *server) GetLogs() []glog.Record {
-	return s.Log.Records
-}
-
 func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
