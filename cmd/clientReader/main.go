@@ -41,5 +41,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("Client : %v", err)
 	}
-	log.Println(r)
+	log.Printf("{'Value': %s , 'Offset': %d}", r.Record.Value, r.Record.Offset)
 }
