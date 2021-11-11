@@ -7,7 +7,7 @@ import (
 
 type Log struct {
 	mu      sync.Mutex
-	records []Record
+	Records []Record
 }
 
 var (
@@ -22,8 +22,8 @@ type Record struct {
 func (l *Log) Append(record Record) (uint64, error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	record.Offset = uint64(len(l.records))
-	l.records = append(l.records, record)
+	record.Offset = uint64(len(l.Records))
+	l.Records = append(l.Records, record)
 	return record.Offset, nil
 }
 
@@ -33,10 +33,10 @@ func (l *Log) Read(offset uint64) (Record, error) {
 
 	var record Record
 
-	if offset > uint64(len(l.records)) || offset < 0 {
+	if offset > uint64(len(l.Records)) || offset < 0 {
 		return Record{}, ErrOutOffset
 	}
 
-	record = l.records[offset]
+	record = l.Records[offset]
 	return record, nil
 }
