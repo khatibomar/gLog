@@ -3,7 +3,28 @@ package log.v1;
 
 option go_package = "github.com/khatibomar/api/v1/logbp";
 
-message Log {
+message Record {
 	bytes value = 1;
 	uint64 offset = 2;
+}
+
+service Logger {
+	rpc Append (produceRequest) returns (produceResponse) {};
+	rpc Read (consumeRequest) returns (consumeResponse) {};
+}
+
+message produceRequest {
+	Record record = 1;
+}
+
+message produceResponse {
+	uint64 offset = 1;
+}
+
+message consumeRequest {
+	uint64 offset = 1;
+}
+
+message consumeResponse {
+	Record record = 1;
 }
