@@ -11,12 +11,18 @@ import (
 )
 
 var (
-	addr   = flag.String("addr", ":6666", "the address to connect")
-	offset = flag.Uint64("offest", 0, "offset of record")
+	addr = flag.String("addr", ":6666", "the address to connect")
+	data = flag.String("data", "", "data to write to log")
 )
 
 func main() {
 	flag.Parse()
+
+	if *data == "" {
+		flag.PrintDefaults()
+		return
+	}
+
 	conn, err := grpc.Dial(*addr, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -28,12 +34,14 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := c.Read(ctx, &pb.ConsumeRequest{
-		Offset: *offset,
+	r, err := c.Append(ctx, &pb.ProduceRequest{
+		Record: &pb.Record{
+			Value: []byte(*data),
+		},
 	})
 
 	if err != nil {
 		log.Fatalf("Client : %v", err)
 	}
-	log.Println(r)
+	log.Printf("write succeed at offset: %d", r.Offset)
 }
