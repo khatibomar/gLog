@@ -9,8 +9,8 @@ message Record {
 }
 
 service Logger {
-	rpc Append (produceRequest) returns (produceResponse) {};
-	rpc Read (consumeRequest) returns (consumeResponse) {};
+	rpc Append (produceRequest) returns (produceResponse) {}
+	rpc Read (consumeRequest) returns (consumeResponse) {}
 }
 
 message produceRequest {
